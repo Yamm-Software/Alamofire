@@ -149,7 +149,7 @@ open class TaskDelegate: NSObject {
             taskDidCompleteWithError(session, task, error)
         } else {
             if let error = error {
-                self.error = error
+                if self.error == nil { self.error = error }
 
                 if
                     let downloadDelegate = self as? DownloadTaskDelegate,
@@ -221,7 +221,7 @@ class DataTaskDelegate: TaskDelegate, URLSessionDataDelegate {
         _ session: URLSession,
         dataTask: URLSessionDataTask,
         didReceive response: URLResponse,
-        completionHandler: ((URLSession.ResponseDisposition) -> Void))
+        completionHandler: @escaping (URLSession.ResponseDisposition) -> Void)
     {
         var disposition: URLSession.ResponseDisposition = .allow
 
@@ -284,7 +284,7 @@ class DataTaskDelegate: TaskDelegate, URLSessionDataDelegate {
         _ session: URLSession,
         dataTask: URLSessionDataTask,
         willCacheResponse proposedResponse: CachedURLResponse,
-        completionHandler: ((CachedURLResponse?) -> Void))
+        completionHandler: @escaping (CachedURLResponse?) -> Void)
     {
         var cachedResponse: CachedURLResponse? = proposedResponse
 
